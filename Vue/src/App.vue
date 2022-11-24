@@ -19,7 +19,7 @@
           </el-menu>
         </el-aside>
         <el-main>
-          <item-list/>
+          <list-page></list-page>
         </el-main>
       </el-container>
     </el-container>
@@ -28,12 +28,12 @@
 
 
 <script>
-import itemList from "./components/item-list.vue";
+import listPage from "./components/list-page.vue";
 
 export default {
   name: 'App',
   components: {
-    itemList
+    listPage
   }
 }
 </script>
