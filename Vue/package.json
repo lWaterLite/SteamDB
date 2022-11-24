@@ -14,7 +14,9 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.2.0",
+    "axios": "1.2.0",
     "vite": "^3.2.3",
+    "vue-cli-plugin-axios": "~0.0.4",
     "vue-cli-plugin-element-plus": "~0.0.13"
   },
   "type": "module"
