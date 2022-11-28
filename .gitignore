@@ -1,3 +1,5 @@
 apps/
 .idea/
 Flask/venv/
+Vue/.idea/
+Flask/.idea/
