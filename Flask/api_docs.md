@@ -8,7 +8,7 @@
 
   此处填入语言代码，示例：en-us, zh-cn
 
-  请注意此处的语言代码必须是数据库中已经录入的代码，任何尝试访问未经录入代码的操作都会返回500，而不是404
+  请注意此处的语言代码必须是数据库中已经录入的代码，任何尝试访问未经录入代码的操作都会返回500，而不是404，同时返回"error with language code"
 
   请自主设计重定向功能，例如数据库中不存在zh-hk语言代码，请自动将zh-hk重定向为zh-tw
 
@@ -22,7 +22,37 @@
   
   - name: item的名称，string
   - date: item的发行日期, 格式为yyyy-mm-dd的string
-  - publisher：item的发行商，string
+  - comment: item的评价，string
+  - rate: item的好评率，float
   - price：item的售价，float
   
   另外array的最后一个元素为int，代表后端在检索item时遇到的无效itemId个数
+
+### /api/<string: language>/item/<int: item_id>
+
+- 用来详细页获取每个item条目的具体信息
+
+- param: language
+
+  此处填入语言代码，与上述一致
+
+- param: item_id
+
+  此处填入itemId
+
+  请注意任何非法的id请求均会导致返回500，而不是404，同时返回纯文本，内容为后端异常描述。
+
+- return: object
+
+  返回一个object，内容如下：
+
+  - itemId: item的Id，int
+  - name：item的名称，string
+  - brief：item的简介，string
+  - comment：item的评价，string
+  - date：item的发行日期, 格式为yyyy-mm-dd的string
+  - rate：item的好评率，float
+  - price：item的售价，float
+  - developer：item的开发商，array，每个元素均为string
+  - publisher：item的发行商，array，每个元素均为string
+  - tag：item的标签，array，每个元素均为string
