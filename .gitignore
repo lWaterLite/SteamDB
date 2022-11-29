@@ -3,3 +3,4 @@ apps/
 Flask/venv/
 Vue/.idea/
 Flask/.idea/
+**/*.pyc
