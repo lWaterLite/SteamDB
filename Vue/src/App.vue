@@ -26,19 +26,12 @@
                 <path fill="currentColor"
                       d="M512 448a64 64 0 1 0 0-128 64 64 0 0 0 0 128zm0 64a128 128 0 1 1 0-256 128 128 0 0 1 0 256z"></path>
               </svg>
-              <span style="margin-left: 20px">游戏列表</span>
-            </el-menu-item>
-            <el-menu-item index="2" style="font-family: serif; font-size: large">
-              <svg height="20px" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa="">
-                <path fill="currentColor"
-                      d="m795.904 750.72 124.992 124.928a32 32 0 0 1-45.248 45.248L750.656 795.904a416 416 0 1 1 45.248-45.248zM480 832a352 352 0 1 0 0-704 352 352 0 0 0 0 704zm-32-384v-96a32 32 0 0 1 64 0v96h96a32 32 0 0 1 0 64h-96v96a32 32 0 0 1-64 0v-96h-96a32 32 0 0 1 0-64h96z"></path>
-              </svg>
-              <span style="margin-left: 20px">添加游戏</span>
+              <span style="margin-left: 10px">游戏列表</span>
             </el-menu-item>
           </el-menu>
         </el-aside>
         <el-main>
-          <list-page></list-page>
+          <list-page :language="value"></list-page>
         </el-main>
       </el-container>
     </el-container>
@@ -48,13 +41,12 @@
 
 <script>
 import listPage from "./components/list-page.vue";
-import {ref} from 'vue'
 
 export default {
   name: 'App',
   data() {
     return {
-      value: ref('zh_cn'),
+      value: 'zh_cn',
       languages: [
         {
           language_id: 1,
@@ -77,6 +69,9 @@ export default {
   },
   components: {
     listPage
+  },
+  methods: {
+
   }
 }
 </script>
