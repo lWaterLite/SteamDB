@@ -1,18 +1,28 @@
 <template>
   <el-tabs
-      v-model="activeLanguageR"
-      class="language-tabs">
-    <el-tab-pane label="English" name="en"><item-list language_id="1"></item-list></el-tab-pane>
-    <el-tab-pane label="简体中文" name="zh_cn"><item-list language_id="2"></item-list></el-tab-pane>
-    <el-tab-pane label="繁体中文" name="zh_tw"><item-list language_id="3"></item-list></el-tab-pane>
+      v-model="value"
+      type="card"
+      closable
+      class="detailPages"
+      @tab-remove="deleteElement">
+    <el-tab-pane label="游戏列表" name="list">
+      <item-list @getItem="getItemId"></item-list>
+    </el-tab-pane>
+    <el-tab-pane
+        v-for="item in items"
+        :key="item.order"
+        :label="item.item_id"
+        :name="item.item_id">
+      {{ item.item_id }}
+    </el-tab-pane>
   </el-tabs>
 
 </template>
 
 <script>
 /*import service from '../plugins/axios.js'*/
-import {ref} from 'vue'
 import itemList from "./item-list.vue";
+import {ElMessage} from "element-plus";
 
 export default {
   name: "list-page",
@@ -21,14 +31,46 @@ export default {
   },
   data() {
     return {
-      activeLanguageR: ref('zh_cn'),
-      language: 'zh_cn',
+      index: 0,
+      value: 'list',
+      items: []
     }
   }, //data
   methods: {
-    getItems() {
-
+    getItemId(data) {
+      if (!this.items.find(element => element.item_id === data.toString()))
+        this.items.push({
+          order: (this.index++).toString(),
+          item_id: data.toString(),
+        });
     },
+    deleteElement(targetName) {
+
+      if (targetName === 'list') {
+        ElMessage({
+          message: '列表页不可关闭',
+          center: true
+        })
+      } else {
+        if (targetName === this.value) {
+          this.items.forEach((item, index) => {
+            if (item.item_id === targetName) {
+              if (this.index - 1 === index) {
+                if (index === 0) {
+                  this.value = 'list'
+                } else {
+                  this.value = this.items[index - 1].item_id
+                }
+              } else {
+                this.value = this.items[index + 1].item_id
+              }
+            }
+          })
+        }
+        this.items = this.items.filter((item) => item.item_id !== targetName)
+        this.index--
+      }
+    }
   }
 }
 </script>
