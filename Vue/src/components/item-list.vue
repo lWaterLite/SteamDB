@@ -1,8 +1,9 @@
 <template>
   <el-table :data="items" stripe @row-click="rowClickHandler" style="user-select: none">
     <el-table-column prop="item_id" label="游戏 id" width="100px"></el-table-column>
+    <el-table-column prop="name" label="游戏名" width="500px"></el-table-column>
     <el-table-column prop="item_launch_date" label="游戏发行时间"></el-table-column>
-    <el-table-column prop="content" label="好评度"></el-table-column>
+    <el-table-column prop="comment" label="好评度"></el-table-column>
     <el-table-column prop="price" label="售价" width="200px"></el-table-column>
   </el-table>
 </template>
@@ -17,14 +18,16 @@ export default {
       items: [
         {
           item_id: 77658,
+          name: '《使命召唤®：现代战争®II 2022》 | 《战争地带2.0》',
           item_launch_date: '2022/01/01',
-          content: '特别好评',
+          comment: '特别好评',
           price: 98
         },
         {
           item_id: 33412,
+          name: '《決勝時刻®：現代戰爭® II 2022》|《現代戰域™2.0》',
           item_launch_date: '2022/02/01',
-          content: '褒贬参半',
+          comment: '褒贬参半',
           price: 48
         }
       ]
@@ -32,7 +35,6 @@ export default {
   }, //data
   methods: {
     rowClickHandler(row) {
-      console.log(row.item_id)
       this.$emit('getItem', row.item_id, row)
     }
   }
