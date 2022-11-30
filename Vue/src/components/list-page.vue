@@ -1,4 +1,5 @@
 <template>
+  {{ language }}
   <el-tabs
       v-model="value"
       type="card"
@@ -36,12 +37,20 @@ export default {
       items: []
     }
   }, //data
+  props: {
+    language: String
+  },
+  watch: {
+    language(newLanguage, oldLanguage) {
+      console.log(newLanguage, oldLanguage)
+    }
+  },
   methods: {
     getItemId(data) {
       if (!this.items.find(element => element.item_id === data.toString()))
         this.items.push({
           order: (this.index++).toString(),
-          item_id: data.toString(),
+          item_id: data.toString(),//此处 toString() 是为了迎合 name 属性为字符串这一情况，抓取数据直接使用 data 抓取
         });
     },
     deleteElement(targetName) {
