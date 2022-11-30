@@ -1,9 +1,9 @@
+from json import dumps
 from flask import Flask
 from sqlalchemy import and_
-from json import dumps
 
-from templates.Table import *
 from templates.ToJson import *
+from templates.Table import *
 
 app = Flask(__name__)  # type: Flask
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost:3306/steamdb'
@@ -104,6 +104,123 @@ def get_item_by_id(language, item_id):
     data = toJsonItem(item_id, name, brief, date, comment, rate, price, publisher, developer, tag)
     data = dumps(data)
 
+    return data, 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/api/<string:language>/publisher/<int:publisher_id>')
+def get_item_by_publisher(language, publisher_id):
+    """
+    This api is to get items with specific publisher.
+
+    @param language: the requested language code.
+    @param publisher_id: the requested publisher id.
+    @return: response with Content-Type of application/json, see more in api docs.
+    """
+    exception_count = 0
+    try:
+        language_id = Language.query.filter_by(language=language).first().languageId
+        items = [i for i in ItemPublisher.query.filter_by(publisherId=publisher_id).all()]
+    except AttributeError:
+        return 'error with publisher id', 500, {'Content-Type': 'text/plain'}
+    data = []
+    for item in items:
+        try:
+            item_id = item.itemId
+            name = ItemNameBrief.query.filter(
+                and_(ItemNameBrief.itemId == item_id, ItemNameBrief.languageId == language_id)).first().name
+            date = Item.query.get(item_id).itemLaunchDate
+            t = ItemComment.query.filter_by(itemId=item_id).first()
+            rate = t.rate
+            comment = CommentLanguage.query.filter(
+                and_(CommentLanguage.commentId == t.commentId,
+                     CommentLanguage.languageId == language_id)).first().comment
+            price = ItemPrice.query.filter(and_(ItemPrice.itemId == item_id, ItemPrice.currencyId == (
+                CurrencyLanguage.query.filter_by(languageId=language_id).first().currencyId
+            ))).first().price
+            data.append(toJsonGeneral(item_id, name, date, comment, rate, price))
+        except AttributeError:
+            exception_count += 1
+
+    data.append(exception_count)
+    data = dumps(data)
+    return data, 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/api/<string:language>/developer/<int:developer_id>')
+def get_item_by_developer(language, developer_id):
+    """
+    This api is to get items with specific developer.
+
+    @param language: the requested language code.
+    @param developer_id: the requested developer id.
+    @return: response with Content-Type of application/json, see more in api docs.
+    """
+    exception_count = 0
+    try:
+        language_id = Language.query.filter_by(language=language).first().languageId
+        items = [i for i in ItemDeveloper.query.filter_by(developerId=developer_id).all()]
+    except AttributeError:
+        return 'error with publisher id code', 500, {'Content-Type': 'text/plain'}
+    data = []
+    for item in items:
+        try:
+            item_id = item.itemId
+            name = ItemNameBrief.query.filter(
+                and_(ItemNameBrief.itemId == item_id, ItemNameBrief.languageId == language_id)).first().name
+            date = Item.query.get(item_id).itemLaunchDate
+            t = ItemComment.query.filter_by(itemId=item_id).first()
+            rate = t.rate
+            comment = CommentLanguage.query.filter(
+                and_(CommentLanguage.commentId == t.commentId,
+                     CommentLanguage.languageId == language_id)).first().comment
+            price = ItemPrice.query.filter(and_(ItemPrice.itemId == item_id, ItemPrice.currencyId == (
+                CurrencyLanguage.query.filter_by(languageId=language_id).first().currencyId
+            ))).first().price
+            data.append(toJsonGeneral(item_id, name, date, comment, rate, price))
+        except AttributeError:
+            exception_count += 1
+
+    data.append(exception_count)
+    data = dumps(data)
+    return data, 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/api/<string:language>/tag/<int:tag_id>')
+def get_item_by_tag(language, tag_id):
+    """
+    This api is to get item with specific tag.
+
+    @param language: the requested language code.
+    @param tag_id: the requested tag id.
+    @return: response with Content-Type of application/json, see more in api docs.
+    """
+    exception_count = 0
+    try:
+        language_id = Language.query.filter_by(language=language).first().languageId
+        items = [i for i in ItemTag.query.filter_by(tagId=tag_id).all()]
+    except AttributeError:
+        return 'error with publisher id code', 500, {'Content-Type': 'text/plain'}
+    data = []
+    for item in items:
+        try:
+            item_id = item.itemId
+            name = ItemNameBrief.query.filter(
+                and_(ItemNameBrief.itemId == item_id, ItemNameBrief.languageId == language_id)).first().name
+            date = Item.query.get(item_id).itemLaunchDate
+            t = ItemComment.query.filter_by(itemId=item_id).first()
+            rate = t.rate
+            comment = CommentLanguage.query.filter(
+                and_(CommentLanguage.commentId == t.commentId,
+                     CommentLanguage.languageId == language_id)).first().comment
+            price = ItemPrice.query.filter(and_(ItemPrice.itemId == item_id, ItemPrice.currencyId == (
+                CurrencyLanguage.query.filter_by(languageId=language_id).first().currencyId
+            ))).first().price
+            data.append(toJsonGeneral(item_id, name, date, comment, rate, price))
+        except AttributeError:
+            exception_count += 1
+
+    data.append(exception_count)
+    data = dumps(data)
     return data, 200, {'Content-Type': 'application/json'}
 
 
