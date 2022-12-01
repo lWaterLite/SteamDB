@@ -35,7 +35,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (1,'\'Overwhemingly Positive\''),(2,'\'Very Positive\''),(3,'\'Positive\''),(4,'\'Mostly Positive\''),(5,'\'Mixed\''),(6,'\'Mostly Negative\''),(7,'\'Negative\''),(8,'\'Very Negative\''),(9,'\'Overwhelmingly Negative\'');
+INSERT INTO `comment` VALUES (1,'Overwhemingly Positive'),(2,'Very Positive'),(3,'Positive'),(4,'Mostly Positive'),(5,'Mixed'),(6,'Mostly Negative'),(7,'Negative'),(8,'Very Negative'),(9,'Overwhelmingly Negative');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -56,7 +56,7 @@ CREATE TABLE `comment_language` (
   KEY `comment_language_language_null_fk` (`language_id`),
   CONSTRAINT `comment_language_comment_null_fk` FOREIGN KEY (`comment_id`) REFERENCES `comment` (`comment_id`),
   CONSTRAINT `comment_language_language_null_fk` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -65,7 +65,7 @@ CREATE TABLE `comment_language` (
 
 LOCK TABLES `comment_language` WRITE;
 /*!40000 ALTER TABLE `comment_language` DISABLE KEYS */;
-INSERT INTO `comment_language` VALUES (1,1,2,'\'好评如潮\''),(2,2,2,'\'特别好评\''),(3,3,2,'\'好评\''),(4,4,2,'\'多半好评\''),(5,5,2,'\'褒贬不一\''),(6,6,2,'\'多半差评\''),(7,7,2,'\'差评\''),(8,8,2,'\'特别差评\''),(9,9,2,'\'差评如潮\''),(19,1,3,'\'壓倒性好評\''),(20,2,3,'\'極度好評\''),(21,3,3,'\'好評\''),(22,4,3,'\'大多好評\''),(23,5,3,'\'褒貶不一\''),(24,6,3,'\'大多負評\''),(25,7,3,'\'負評\''),(26,8,3,'\'極度負評\''),(27,9,3,'\'壓倒性負評\'');
+INSERT INTO `comment_language` VALUES (1,1,2,'好评如潮'),(2,2,2,'特别好评'),(3,3,2,'好评'),(4,4,2,'多半好评'),(5,5,2,'褒贬不一'),(6,6,2,'多半差评'),(7,7,2,'差评'),(8,8,2,'特别差评'),(9,9,2,'差评如潮'),(19,1,3,'壓倒性好評'),(20,2,3,'極度好評'),(21,3,3,'好評'),(22,4,3,'大多好評'),(23,5,3,'褒貶不一'),(24,6,3,'大多負評'),(25,7,3,'負評'),(26,8,3,'極度負評'),(27,9,3,'壓倒性負評'),(28,1,1,'Overwhemingly Positive'),(29,2,1,'Very Positive'),(30,3,1,'Positive'),(31,4,1,'Mostly Positive'),(32,5,1,'Mixed'),(33,6,1,'Mostly Negative'),(34,7,1,'Negative'),(35,8,1,'Very Negative'),(36,9,1,'Overwhelmingly Negative');
 /*!40000 ALTER TABLE `comment_language` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -94,6 +94,35 @@ INSERT INTO `currency` VALUES (1,'USD'),(2,'CNY'),(3,'HKD');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `currency_language`
+--
+
+DROP TABLE IF EXISTS `currency_language`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `currency_language` (
+  `currency_language_id` int NOT NULL AUTO_INCREMENT,
+  `currency_id` int NOT NULL,
+  `language_id` int NOT NULL,
+  PRIMARY KEY (`currency_language_id`),
+  KEY `currency_language_currency_null_fk` (`currency_id`),
+  KEY `currency_language_language_null_fk` (`language_id`),
+  CONSTRAINT `currency_language_currency_null_fk` FOREIGN KEY (`currency_id`) REFERENCES `currency` (`currency_id`),
+  CONSTRAINT `currency_language_language_null_fk` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `currency_language`
+--
+
+LOCK TABLES `currency_language` WRITE;
+/*!40000 ALTER TABLE `currency_language` DISABLE KEYS */;
+INSERT INTO `currency_language` VALUES (1,1,1),(2,2,2),(3,3,3);
+/*!40000 ALTER TABLE `currency_language` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `developer`
 --
 
@@ -113,7 +142,7 @@ CREATE TABLE `developer` (
 
 LOCK TABLES `developer` WRITE;
 /*!40000 ALTER TABLE `developer` DISABLE KEYS */;
-INSERT INTO `developer` VALUES (1,'\'Infinity Ward\''),(2,'\'Raven Software\''),(3,'\'Beenox\''),(4,'\'Treyarch\''),(5,'\'Activision Shanghai\''),(6,'\'Demonware\''),(7,'\'Sledgehammer Games\''),(8,'\'Valve\''),(9,'\'Hidden Path Entertainment\'');
+INSERT INTO `developer` VALUES (1,'Infinity Ward'),(2,'Raven Software'),(3,'Beenox'),(4,'Treyarch'),(5,'Activision Shanghai'),(6,'Demonware'),(7,'Sledgehammer Games'),(8,'Valve'),(9,'Hidden Path Entertainment');
 /*!40000 ALTER TABLE `developer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -227,7 +256,7 @@ CREATE TABLE `item_name_brief` (
 
 LOCK TABLES `item_name_brief` WRITE;
 /*!40000 ALTER TABLE `item_name_brief` DISABLE KEYS */;
-INSERT INTO `item_name_brief` VALUES (1,1938090,2,'《使命召唤®：现代战争®II 2022》 | 《战争地带2.0》','《使命召唤®：现代战争®II 2022》将玩家带入了一场前所未有的全球冲突，141特遣队的标志性队员们即将回归。'),(2,1938090,1,'\'Call of Duty®: Modern Warfare® II\'','\'Call of Duty®: Modern Warfare® II drops players into an unprecedented global conflict that features the return of the iconic Operators of Task Force 141.\''),(3,1938090,3,'\'《決勝時刻®：現代戰爭® II 2022》|《現代戰域™2.0》\'','\'《決勝時刻®：現代戰爭® II 2022》帶領玩家到一個前所未有的全球威脅，而141特遣隊的經典特戰兵將載譽歸來。\''),(4,400,2,'\'Portal\'','\'Portal™ 是 Valve 新开发的单人游戏。故事背景设定在神秘的光圈科技实验室，Portal 已被誉为业界最具创意的新游戏，它将为玩家带来数十小时独一无二的游戏体验。 此游戏旨在改变玩家在特定环境中处理、应付和推测可能性情况的方法；与 Half-Life® 2 的“重力枪”开辟在特定环境下处理目标的新方法类似。 玩家必须通过空间打开前往操纵物体和谜题的入口，解决物理难题和挑战。\''),(5,400,1,'\'Portal\'','\'Portal™ is a new single player game from Valve. Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.\''),(6,400,3,'\'Portal\'','\'Portal™ 是 Valve 新的單人遊戲。Portal 的場景為神秘的「光圈科學實驗室」，它已被譽為目前最富創意的新遊戲，將會帶給玩家好幾個小時的獨特遊戲體驗。 該遊戲是設計用於改變玩家在既定環境下處理、操作及猜測潛在可能性的方式；類似在任何既定狀態之下使用 Half-Life® 2 重力槍來運用物體的創舉。 玩家們必需要透過開啟傳送門移動物體及自己本身，以解開謎題與應付各項挑戰。\'');
+INSERT INTO `item_name_brief` VALUES (1,1938090,2,'《使命召唤®：现代战争®II 2022》 | 《战争地带2.0》','《使命召唤®：现代战争®II 2022》将玩家带入了一场前所未有的全球冲突，141特遣队的标志性队员们即将回归。'),(2,1938090,1,'Call of Duty®: Modern Warfare® II','Call of Duty®: Modern Warfare® II drops players into an unprecedented global conflict that features the return of the iconic Operators of Task Force 141.'),(3,1938090,3,'《決勝時刻®：現代戰爭® II 2022》|《現代戰域™2.0》','《決勝時刻®：現代戰爭® II 2022》帶領玩家到一個前所未有的全球威脅，而141特遣隊的經典特戰兵將載譽歸來。'),(4,400,2,'Portal','Portal™ 是 Valve 新开发的单人游戏。故事背景设定在神秘的光圈科技实验室，Portal 已被誉为业界最具创意的新游戏，它将为玩家带来数十小时独一无二的游戏体验。 此游戏旨在改变玩家在特定环境中处理、应付和推测可能性情况的方法；与 Half-Life® 2 的“重力枪”开辟在特定环境下处理目标的新方法类似。 玩家必须通过空间打开前往操纵物体和谜题的入口，解决物理难题和挑战。'),(5,400,1,'Portal','Portal™ is a new single player game from Valve. Set in the mysterious Aperture Science Laboratories, Portal has been called one of the most innovative new games on the horizon and will offer gamers hours of unique gameplay.'),(6,400,3,'Portal','Portal™ 是 Valve 新的單人遊戲。Portal 的場景為神秘的「光圈科學實驗室」，它已被譽為目前最富創意的新遊戲，將會帶給玩家好幾個小時的獨特遊戲體驗。 該遊戲是設計用於改變玩家在既定環境下處理、操作及猜測潛在可能性的方式；類似在任何既定狀態之下使用 Half-Life® 2 重力槍來運用物體的創舉。 玩家們必需要透過開啟傳送門移動物體及自己本身，以解開謎題與應付各項挑戰。');
 /*!40000 ALTER TABLE `item_name_brief` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -363,7 +392,7 @@ CREATE TABLE `publisher` (
 
 LOCK TABLES `publisher` WRITE;
 /*!40000 ALTER TABLE `publisher` DISABLE KEYS */;
-INSERT INTO `publisher` VALUES (1,'\'Activision\''),(2,'\'Valve\'');
+INSERT INTO `publisher` VALUES (1,'Activision'),(2,'Valve');
 /*!40000 ALTER TABLE `publisher` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +417,7 @@ CREATE TABLE `tag` (
 
 LOCK TABLES `tag` WRITE;
 /*!40000 ALTER TABLE `tag` DISABLE KEYS */;
-INSERT INTO `tag` VALUES (9,'\'3D Platformer\''),(2,'\'Action\''),(10,'\'Competitive\''),(8,'\'First-Person\''),(1,'\'FPS\''),(4,'\'Multiplayer\''),(7,'\'Puzzle Platformer\''),(6,'\'Puzzle\''),(3,'\'Shooter\''),(5,'\'Singleplayer\'');
+INSERT INTO `tag` VALUES (9,'3D Platformer'),(2,'Action'),(10,'Competitive'),(8,'First-Person'),(1,'FPS'),(4,'Multiplayer'),(6,'Puzzle'),(7,'Puzzle Platformer'),(3,'Shooter'),(5,'Singleplayer');
 /*!40000 ALTER TABLE `tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -409,7 +438,7 @@ CREATE TABLE `tag_language` (
   KEY `tag_language_tag_null_fk` (`tag_id`),
   CONSTRAINT `tag_language_language_null_fk` FOREIGN KEY (`language_id`) REFERENCES `language` (`language_id`),
   CONSTRAINT `tag_language_tag_null_fk` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -418,7 +447,7 @@ CREATE TABLE `tag_language` (
 
 LOCK TABLES `tag_language` WRITE;
 /*!40000 ALTER TABLE `tag_language` DISABLE KEYS */;
-INSERT INTO `tag_language` VALUES (1,1,2,'\'第一人称射击\''),(2,2,2,'\'动作\''),(3,3,2,'\'射击\''),(4,4,2,'\'多人\''),(5,5,2,'\'单人\''),(6,6,2,'\'解密\''),(7,7,2,'\'平台解密\''),(8,8,2,'\'第一人称\''),(9,9,2,'\'3D 平台\''),(10,1,3,'\'第一人稱射擊\''),(11,2,3,'\'動作\''),(12,3,3,'\'射擊\''),(13,4,3,'\'多人\''),(14,5,3,'\'單人\''),(18,6,3,'\'解謎\''),(19,7,3,'\'平台解謎\''),(20,8,3,'\'第一人稱視角\''),(21,9,3,'\'3D 平台\''),(22,10,2,'\'竞技\''),(23,10,3,'\'競技\'');
+INSERT INTO `tag_language` VALUES (1,1,2,'第一人称射击'),(2,2,2,'动作'),(3,3,2,'射击'),(4,4,2,'多人'),(5,5,2,'单人'),(6,6,2,'解密'),(7,7,2,'平台解密'),(8,8,2,'第一人称'),(9,9,2,'3D 平台'),(10,1,3,'第一人稱射擊'),(11,2,3,'動作'),(12,3,3,'射擊'),(13,4,3,'多人'),(14,5,3,'單人'),(18,6,3,'解謎'),(19,7,3,'平台解謎'),(20,8,3,'第一人稱視角'),(21,9,3,'3D 平台'),(22,10,2,'竞技'),(23,10,3,'競技'),(24,9,1,'3D Platformer'),(25,2,1,'Action'),(26,10,1,'Competitive'),(27,8,1,'First-Person'),(28,1,1,'FPS'),(29,4,1,'Multiplayer'),(30,6,1,'Puzzle'),(31,7,1,'Puzzle Platformer'),(32,3,1,'Shooter'),(33,5,1,'Singleplayer');
 /*!40000 ALTER TABLE `tag_language` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -431,4 +460,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-11-23 19:45:47
+-- Dump completed on 2022-12-01 11:47:47
