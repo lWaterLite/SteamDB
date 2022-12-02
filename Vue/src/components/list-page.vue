@@ -7,28 +7,28 @@
       class="detailPages"
       @tab-remove="deleteElement">
     <el-tab-pane label="游戏列表" name="list">
-      <item-list @getItem="getItemId"></item-list>
+      <item-list @getItem="getItemId" :language="language"></item-list>
     </el-tab-pane>
     <el-tab-pane
         v-for="item in items"
-        :key="item.order"
-        :label="item.item_id"
-        :name="item.item_id">
-      {{ item.item_id }}
+        :label="item.name"
+        :name="item.itemId">
+      <detail :language="language" :itemId="item.itemId"></detail>
     </el-tab-pane>
   </el-tabs>
 
 </template>
 
 <script>
-/*import service from '../plugins/axios.js'*/
 import itemList from "./item-list.vue";
+import detail from "./detail.vue";
 import {ElMessage} from "element-plus";
 
 export default {
   name: "list-page",
   components: {
-    itemList
+    itemList,
+    detail
   },
   data() {
     return {
@@ -40,18 +40,15 @@ export default {
   props: {
     language: String
   },
-  watch: {
-    language(newLanguage, oldLanguage) {
-      console.log(newLanguage, oldLanguage)
-    }
-  },
   methods: {
-    getItemId(data) {
-      if (!this.items.find(element => element.item_id === data.toString()))
+    getItemId(data, name) {
+      if (!this.items.find(element => element.itemId === data.toString())) {
         this.items.push({
-          order: (this.index++).toString(),
-          item_id: data.toString(),//此处 toString() 是为了迎合 name 属性为字符串这一情况，抓取数据直接使用 data 抓取
+          itemId: data.toString(),//此处 toString() 是为了迎合 name 属性为字符串这一情况，抓取数据直接使用 data 抓取
+          name: name
         });
+        this.index++
+      }
     },
     deleteElement(targetName) {
 
@@ -63,20 +60,20 @@ export default {
       } else {
         if (targetName === this.value) {
           this.items.forEach((item, index) => {
-            if (item.item_id === targetName) {
+            if (item.itemId === targetName) {
               if (this.index - 1 === index) {
                 if (index === 0) {
                   this.value = 'list'
                 } else {
-                  this.value = this.items[index - 1].item_id
+                  this.value = this.items[index - 1].itemId
                 }
               } else {
-                this.value = this.items[index + 1].item_id
+                this.value = this.items[index + 1].itemId
               }
             }
           })
         }
-        this.items = this.items.filter((item) => item.item_id !== targetName)
+        this.items = this.items.filter((item) => item.itemId !== targetName)
         this.index--
       }
     }

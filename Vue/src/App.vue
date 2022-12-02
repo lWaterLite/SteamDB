@@ -46,22 +46,22 @@ export default {
   name: 'App',
   data() {
     return {
-      value: 'zh_cn',
+      value: 'zh-cn',
       languages: [
         {
           language_id: 1,
           language_label: 'English',
-          language_name: 'en'
+          language_name: 'en-us'
         },
         {
           language_id: 2,
           language_label: '简体中文',
-          language_name: 'zh_cn'
+          language_name: 'zh-cn'
         },
         {
           language_id: 3,
           language_label: '繁体中文',
-          language_name: 'zh_tw'
+          language_name: 'zh-tw'
         },
 
       ]
