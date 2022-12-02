@@ -1,5 +1,4 @@
 <template>
-  {{ language }}
   <el-tabs
       v-model="value"
       type="card"
@@ -13,7 +12,7 @@
         v-for="item in items"
         :label="item.name"
         :name="item.itemId">
-      <detail :language="language" :itemId="item.itemId"></detail>
+      <detail :language="language" :itemId="item.itemId" @wrongSearch="cleanException"></detail>
     </el-tab-pane>
   </el-tabs>
 
@@ -51,7 +50,6 @@ export default {
       }
     },
     deleteElement(targetName) {
-
       if (targetName === 'list') {
         ElMessage({
           message: '列表页不可关闭',
@@ -76,6 +74,9 @@ export default {
         this.items = this.items.filter((item) => item.itemId !== targetName)
         this.index--
       }
+    },
+    cleanException(itemId) {
+      this.deleteElement(itemId)
     }
   }
 }
