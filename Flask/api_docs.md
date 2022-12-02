@@ -59,7 +59,7 @@
 
 ### /api/<string: language>/publisher/<int: publisher_id>
 
-- 用来查找含有特定publiser的item
+- 用来查找含有特定publisher的item
 
 - param: language
 
