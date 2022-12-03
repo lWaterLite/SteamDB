@@ -1,7 +1,17 @@
 <template>
-  {{ detail }}
+<div >{{detail.name}}
+</div>
+<div>
+<span>{{detail.brief}} </span>
+  <el-divider></el-divider>
+<span><p>date:{{detail.date}}</p>
+  <p>price:{{detail.price}}￥</p>
+  <p>rate:{{(detail.rate*100)}}%</p>
+<p>publisher:<el-tag v-for="publisher in detail.publisher">{{publisher}}</el-tag> </p></span>
+<el-divider></el-divider>
+<span>tags:<el-tag v-for="tag in detail.tag">{{tag}}</el-tag> </span>
+</div>
 </template>
-
 <script>
 import {httpGet} from "../plugins/axios.js";
 
@@ -13,7 +23,7 @@ export default {
   },
   data() {
     return {
-      detail: []
+      detail:{}
     }
   },
   props: {
@@ -34,7 +44,7 @@ export default {
           .catch(() => {
             this.$emit('wrongSearch', this.itemId)
           })
-    }
+    },
   }
 }
 </script>
