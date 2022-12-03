@@ -53,9 +53,9 @@
   - date：item的发行日期, 格式为yyyy-mm-dd的string
   - rate：item的好评率，float
   - price：item的售价，float
-  - developer：item的开发商，array，每个元素均为string
-  - publisher：item的发行商，array，每个元素均为string
-  - tag：item的标签，array，每个元素均为string
+  - developer：item的开发商，array，每个元素均为object，内容为{developerId: developer}，其中developerId为int，developer为string。
+  - publisher：item的发行商，array，每个元素均为object，内容为{publisherId: publisher}，其中publisherId为int，publisher为string。
+  - tag：item的标签，array，每个元素均为object，内容为{tagId: tag}，其中tagId为int，tag为string。
 
 ### /api/<string: language>/publisher/<int: publisher_id>
 
