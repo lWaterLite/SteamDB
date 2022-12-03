@@ -12,7 +12,11 @@
         v-for="item in items"
         :label="item.name"
         :name="item.itemId">
-      <detail :language="language" :itemId="item.itemId" @wrongSearch="cleanException"></detail>
+      <detail
+          :language="language"
+          :itemId="item.itemId"
+          @wrongSearch="cleanException"
+          @languageChangeHandler="(data) => item.name = data"></detail>
     </el-tab-pane>
   </el-tabs>
 
