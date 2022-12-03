@@ -12,12 +12,13 @@
 <span>tags:<el-tag v-for="tag in detail.tag">{{tag}}</el-tag> </span>
 </div>
 </template>
+
 <script>
 import {httpGet} from "../plugins/axios.js";
 
 export default {
   name: "detail",
-  emits:['wrongSearch'],
+  emits: ['wrongSearch', 'languageChangeHandler'],
   mounted() {
     this.getDetail(this.language, this.itemId)
   },
@@ -40,11 +41,12 @@ export default {
       httpGet.get('/api/' + language + '/item/' + itemId)
           .then((res) => {
             this.detail = res.data
+            this.$emit('languageChangeHandler', res.data.name)
           })
           .catch(() => {
             this.$emit('wrongSearch', this.itemId)
           })
-    },
+    }
   }
 }
 </script>
