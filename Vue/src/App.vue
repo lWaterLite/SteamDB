@@ -8,9 +8,9 @@
             class="language"
             placeholder="选择语言"
             size="small"
-            style="position: absolute; right: 10px; height: 5px; user-select: none">
+            style="position: absolute; right: 10px; height: 5px;">
           <el-option v-for="item in languages" :key="item.language_id" :label="item.language_label"
-                     :value="item.language_name"></el-option>
+                     :value="item.language_name" style="user-select: none"></el-option>
         </el-select>
       </el-header>
       <el-container>
