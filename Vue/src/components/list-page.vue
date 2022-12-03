@@ -5,8 +5,8 @@
       closable
       class="detailPages"
       @tab-remove="deleteElement">
-    <el-tab-pane label="游戏列表" name="list">
-      <item-list @getItem="getItemId" :language="language"></item-list>
+    <el-tab-pane :label="title" name="list">
+      <item-list @getItem="getItemId" :language="language" mode="all"></item-list>
     </el-tab-pane>
     <el-tab-pane
         v-for="item in items"
@@ -17,6 +17,13 @@
           :itemId="item.itemId"
           @wrongSearch="cleanException"
           @languageChangeHandler="(data) => item.name = data"></detail>
+    </el-tab-pane>
+    <el-tab-pane
+        v-for="search in searches"
+        :label="search.title"
+        :name="search.order">
+      <item-list @getItem="getItemId" :language="language" :mode="search.mode" :param="search.param"></item-list>
+      <!-- TODO 建立 search 数组，数组元素由 detail 组件的 emit 获得，title 格式为 mode（用 language 翻译过后）: param-->
     </el-tab-pane>
   </el-tabs>
 
@@ -35,13 +42,38 @@ export default {
   },
   data() {
     return {
-      index: 0,
+      itemsIndex: 0,
       value: 'list',
-      items: []
+      title: '游戏列表',
+      languageTitles: [
+        {
+          language: 'zh-cn',
+          title: '游戏列表',
+        },
+        {
+          language: 'en-us',
+          title: 'Game List'
+        },
+        {
+          language: 'zh-tw',
+          title: '遊戲列表'
+        }
+      ],
+      items: [],
+      searches: []
     }
   }, //data
   props: {
     language: String
+  },
+  watch: {
+    language(newLanguage) {
+      this.languageTitles.forEach((language) => {
+        if (language.language === newLanguage) {
+          this.title = language.title
+        }
+      })
+    }
   },
   methods: {
     getItemId(data, name) {
@@ -50,7 +82,7 @@ export default {
           itemId: data.toString(),//此处 toString() 是为了迎合 name 属性为字符串这一情况，抓取数据直接使用 data 抓取
           name: name
         });
-        this.index++
+        this.itemsIndex++
       }
     },
     deleteElement(targetName) {
@@ -63,7 +95,7 @@ export default {
         if (targetName === this.value) {
           this.items.forEach((item, index) => {
             if (item.itemId === targetName) {
-              if (this.index - 1 === index) {
+              if (this.itemsIndex - 1 === index) {
                 if (index === 0) {
                   this.value = 'list'
                 } else {
@@ -76,7 +108,7 @@ export default {
           })
         }
         this.items = this.items.filter((item) => item.itemId !== targetName)
-        this.index--
+        this.itemsIndex--
       }
     },
     cleanException(itemId) {
