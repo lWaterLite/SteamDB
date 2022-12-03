@@ -6,7 +6,7 @@ from templates.ToJson import *
 from templates.Table import *
 
 app = Flask(__name__)  # type: Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Zn+H2SO4@localhost:3306/steamdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost:3306/steamdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 db.init_app(app)
