@@ -76,9 +76,10 @@ def get_item_by_id(language, item_id):
         t = ItemPublisher.query.filter_by(itemId=item_id).all()
         publisher = []
         for i in t:
-            publisher.append(
-                Publisher.query.get(i.publisherId).publisher
-            )
+            k = Publisher.query.get(i.publisherId)
+            publisher.append({
+                k.publisherId: k.publisher
+            })
         t = ItemComment.query.filter_by(itemId=item_id).first()
         rate = t.rate
         comment = CommentLanguage.query.filter(
@@ -87,17 +88,19 @@ def get_item_by_id(language, item_id):
         t = ItemDeveloper.query.filter_by(itemId=item_id).all()
         developer = []
         for i in t:
-            developer.append(
-                Developer.query.get(i.developerId).developer
-            )
+            k = Developer.query.get(i.developerId)
+            developer.append({
+                k.developerId: k.developer
+            })
         t = ItemTag.query.filter_by(itemId=item_id).all()
         tag = []
         for i in t:
-            tag.append(
-                TagLanguage.query.filter(
-                    and_(TagLanguage.tagId == i.tagId, TagLanguage.languageId == language_id)
-                ).first().tag
-            )
+            k = TagLanguage.query.filter(
+                and_(TagLanguage.tagId == i.tagId, TagLanguage.languageId == language_id)
+            ).first()
+            tag.append({
+                k.tagId: k.tag
+            })
     except AttributeError as e:
         return str(e), 500, {'Content-Type': 'text/plain'}
 
