@@ -16,14 +16,16 @@
           :language="language"
           :itemId="item.itemId"
           @wrongSearch="cleanException"
-          @languageChangeHandler="(data) => item.name = data"></detail>
+          @languageChangeHandler="(data) => item.name = data"
+          @searchList="addSearchList"
+      ></detail>
     </el-tab-pane>
     <el-tab-pane
         v-for="search in searches"
         :label="search.title"
-        :name="search.order">
+        :name="search.id">
       <item-list @getItem="getItemId" :language="language" :mode="search.mode" :param="search.param"></item-list>
-      <!-- TODO 建立 search 数组，数组元素由 detail 组件的 emit 获得，title 格式为 mode（用 language 翻译过后）: param-->
+      <!-- TODO 建立 search 数组，数组元素由 detail 组件的 emit 获得，title 为待搜索的 Object 翻译过后的内容，id 的格式为 mode: param-->
     </el-tab-pane>
   </el-tabs>
 
@@ -43,6 +45,8 @@ export default {
   data() {
     return {
       itemsIndex: 0,
+      searchIndex: 0,
+      searchOrder: 0,
       value: 'list',
       title: '游戏列表',
       languageTitles: [
@@ -92,29 +96,70 @@ export default {
           center: true
         })
       } else {
-        if (targetName === this.value) {
-          this.items.forEach((item, index) => {
-            if (item.itemId === targetName) {
-              if (this.itemsIndex - 1 === index) {
-                if (index === 0) {
-                  this.value = 'list'
-                } else {
-                  this.value = this.items[index - 1].itemId
+        let flag = false
+        this.items.forEach((item) => {
+              if (targetName === item.itemId) {
+                if (targetName === this.value) {
+                  this.items.forEach((item, index) => {
+                    if (item.itemId === targetName) {
+                      if (this.itemsIndex - 1 === index) {
+                        if (index === 0) {
+                          this.value = 'list'
+                        } else {
+                          this.value = this.items[index - 1].itemId
+                        }
+                      } else {
+                        this.value = this.items[index + 1].itemId
+                      }
+                    }
+                  })
                 }
-              } else {
-                this.value = this.items[index + 1].itemId
+                this.items = this.items.filter((item) => item.itemId !== targetName)
+                this.itemsIndex--
               }
+              flag = true
             }
-          })
+        )
+        if (!flag) {
+          if (targetName === this.value) {
+            this.searches.forEach((search, index) => {
+              if (search.id === targetName) {
+                if (this.searchIndex - 1 === index) {
+                  if (index === 0) {
+                    if (this.itemsIndex === 0)
+                      this.value = 'list'
+                    else
+                      this.value = this.items[this.items.length - 1].itemId
+                  } else {
+                    this.value = this.searches[index - 1].id
+                  }
+                } else {
+                  this.value = this.searches[index + 1].id
+                }
+              }
+            })
+          }
+          this.searches = this.searches.filter((search) => search.id !== targetName)
+          this.searchIndex--
         }
-        this.items = this.items.filter((item) => item.itemId !== targetName)
-        this.itemsIndex--
       }
     },
     cleanException(itemId) {
       this.deleteElement(itemId)
+    },
+    addSearchList(mode, param, title) {
+      let id = mode + ': ' + param
+      if (!this.searches.find(search => search.id === id)) {
+        this.searches.push({
+          id: id,
+          title: title,
+          mode: mode,
+          param: param
+        });
+        this.searchIndex++
+      }
     }
-  }
+  },
 }
 </script>
 
