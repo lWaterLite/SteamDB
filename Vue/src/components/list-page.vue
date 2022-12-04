@@ -34,6 +34,7 @@
 import itemList from "./item-list.vue";
 import detail from "./detail.vue";
 import {ElMessage} from "element-plus";
+import {httpGet} from "../plugins/axios.js";
 
 export default {
   name: "list-page",
@@ -70,6 +71,17 @@ export default {
   watch: {
     language(newLanguage) {
       this.changeTitleByLanguage(newLanguage)
+      this.searches.forEach((search => {
+        if (search.mode === 'tag') {
+          httpGet.get('/api/' + this.language + '/content/tag/' + search.param)
+              .then((res) => {
+                search.title = res.data
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+        }
+      }))
     }
   },
   mounted() {
