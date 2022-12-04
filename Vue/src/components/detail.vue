@@ -1,18 +1,24 @@
 <template>
-  {{ detail }}
-  <div>{{ detail.name }}</div>
-  <div>
-    <span>{{ detail.brief }} </span>
-    <el-divider></el-divider>
-    <span>{{ titles[0] }}:{{ detail.date }}</span>
-    <span>{{ titles[1] }}:{{ detail.price }}￥</span>
-    <span>{{ titles[2] }}:{{ (detail.rate * 100) }}%</span>
-    <span>{{ titles[3] }}:<el-tag v-for="publisher in publishers">{{ publisher }}</el-tag> </span>
-    <span>{{ titles[4] }}:<el-tag v-for="developer in developers">{{ developer }}</el-tag> </span>
-    <el-divider></el-divider>
-    {{ titles[5] }}:
-    <el-tag v-for="tag in tags">{{ tag }}</el-tag>
-  </div>
+  <el-descriptions
+      border
+      column="3"
+      size="large"
+      :title="detail.name"
+  >
+    <el-descriptions-item :label="titles[0]" span="3">{{ detail.brief }}</el-descriptions-item>
+    <el-descriptions-item :label="titles[1]">{{ detail.date }}</el-descriptions-item>
+    <el-descriptions-item :label="titles[2]">{{ detail.price }} ¥</el-descriptions-item>
+    <el-descriptions-item :label="titles[3]">{{ detail.rate * 100 }} %</el-descriptions-item>
+    <el-descriptions-item :label="titles[4]" span="3">
+      <el-tag v-for="publisher in publishers" @click="searchList('publisher', publisher)">{{ publisher }}</el-tag>
+    </el-descriptions-item>
+    <el-descriptions-item :label="titles[5]" span="3">
+      <el-tag v-for="developer in developers" @click="searchList('developer', developer)">{{ developer }}</el-tag>
+    </el-descriptions-item>
+    <el-descriptions-item :label="titles[6]" span="3">
+      <el-tag v-for="tag in tags" @click="searchList('tag', tag)">{{ tag }}</el-tag>
+    </el-descriptions-item>
+  </el-descriptions>
 </template>
 
 <script>
@@ -20,7 +26,7 @@ import {httpGet} from "../plugins/axios.js";
 
 export default {
   name: "detail",
-  emits: ['wrongSearch', 'languageChangeHandler'],
+  emits: ['wrongSearch', 'languageChangeHandler', 'searchList'],
   mounted() {
     this.getDetail(this.language, this.itemId)
   },
@@ -28,21 +34,21 @@ export default {
     return {
       detail: {},
       tags: [],
-      titles: ['游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签'],
+      titles: ['简介', '游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签'],
       publishers: [],
       developers: [],
       languageTitles: [
         {
           language: 'zh-cn',
-          titles: ['游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签']
+          titles: ['简介', '游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签']
         },
         {
           language: 'en-us',
-          titles: ['game release time', 'price', 'rate', 'producers', 'publisher', 'tags']
+          titles: ['Brief Introduction', 'Game Release Time', 'Price', 'Rate', 'Producers', 'Publisher', 'Tags']
         },
         {
           language: 'zh-tw',
-          titles: ['遊戲發行時間', '價格', '好評率', '製作商', '發行商', '標簽']
+          titles: ['簡介', '遊戲發行時間', '價格', '好評率', '製作商', '發行商', '標簽']
         }
       ]
     }
@@ -61,6 +67,9 @@ export default {
     getDetail(language, itemId) {
       httpGet.get('/api/' + language + '/item/' + itemId)
           .then((res) => {
+            this.tags = []
+            this.publishers = []
+            this.developers = []
             this.detail = res.data
             this.$emit('languageChangeHandler', res.data.name)
             this.detail.tag.forEach((tag) => {
@@ -82,6 +91,23 @@ export default {
           .catch(() => {
             this.$emit('wrongSearch', this.itemId)
           })
+    },
+    searchList(mode, title) {
+      let param
+      for (name in this.detail) {
+        if (name === mode) {
+          const arr = this.detail[name]
+          arr.forEach((e) => {
+            for (name in e) {
+              if (e[name] === title) {
+                param = name
+              }
+            }
+          })
+          break
+        }
+      }
+      this.$emit('searchList', mode, param, title)
     }
   }
 }
