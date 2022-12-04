@@ -44,8 +44,6 @@ export default {
   data() {
     return {
       itemsIndex: 0,
-      searchIndex: 0,
-      searchOrder: 0,
       value: 'list',
       title: '游戏列表',
       languageTitles: [
@@ -71,12 +69,11 @@ export default {
   },
   watch: {
     language(newLanguage) {
-      this.languageTitles.forEach((language) => {
-        if (language.language === newLanguage) {
-          this.title = language.title
-        }
-      })
+      this.changeTitleByLanguage(newLanguage)
     }
+  },
+  mounted() {
+    this.changeTitleByLanguage(this.language)
   },
   methods: {
     getItemId(data, name) {
@@ -85,7 +82,6 @@ export default {
           itemId: data.toString(),//此处 toString() 是为了迎合 name 属性为字符串这一情况，抓取数据直接使用 data 抓取
           name: name
         });
-        this.itemsIndex++
       }
     },
     deleteElement(targetName) {
@@ -101,7 +97,7 @@ export default {
                 if (targetName === this.value) {
                   this.items.forEach((item, index) => {
                     if (item.itemId === targetName) {
-                      if (this.itemsIndex - 1 === index) {
+                      if (this.items.length - 1 === index) {
                         if (index === 0) {
                           this.value = 'list'
                         } else {
@@ -114,7 +110,6 @@ export default {
                   })
                 }
                 this.items = this.items.filter((item) => item.itemId !== targetName)
-                this.itemsIndex--
                 flag = true
               }
             }
@@ -123,9 +118,9 @@ export default {
           if (targetName === this.value) {
             this.searches.forEach((search, index) => {
               if (search.id === targetName) {
-                if (this.searchIndex - 1 === index) {
+                if (this.searches.length - 1 === index) {
                   if (index === 0) {
-                    if (this.itemsIndex === 0)
+                    if (this.items.length=== 0)
                       this.value = 'list'
                     else
                       this.value = this.items[this.items.length - 1].itemId
@@ -139,7 +134,6 @@ export default {
             })
           }
           this.searches = this.searches.filter((search) => search.id !== targetName)
-          this.searchIndex--
         }
       }
     },
@@ -155,8 +149,14 @@ export default {
           mode: mode,
           param: param
         });
-        this.searchIndex++
       }
+    },
+    changeTitleByLanguage(newLanguage) {
+      this.languageTitles.forEach((language) => {
+        if (language.language === newLanguage) {
+          this.title = language.title
+        }
+      })
     }
   },
 }

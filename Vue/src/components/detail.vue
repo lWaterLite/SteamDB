@@ -29,6 +29,7 @@ export default {
   emits: ['wrongSearch', 'languageChangeHandler', 'searchList'],
   mounted() {
     this.getDetail(this.language, this.itemId)
+    this.changeTitleByLanguage(this.language)
   },
   data() {
     return {
@@ -60,7 +61,7 @@ export default {
   watch: {
     language(newLanguage) {
       this.getDetail(newLanguage, this.itemId)
-      this.titles = this.languageTitles.find((tag) => tag.language === newLanguage).titles
+      this.changeTitleByLanguage(newLanguage)
     }
   },
   methods: {
@@ -108,6 +109,13 @@ export default {
         }
       }
       this.$emit('searchList', mode, param, title)
+    },
+    changeTitleByLanguage(newLanguage) {
+      this.languageTitles.forEach((language) => {
+        if (language.language === newLanguage) {
+          this.titles = language.titles
+        }
+      })
     }
   }
 }

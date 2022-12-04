@@ -16,6 +16,7 @@ export default {
   name: "item-list",
   mounted() {
     this.getItems(this.language)
+    this.changeTitleByLanguage(this.language)
   },
   data() {
     return {
@@ -46,11 +47,7 @@ export default {
   watch: {
     language(newLanguage) {
       this.getItems(newLanguage)
-      this.languageTitles.forEach((language) => {
-        if (language.language === newLanguage) {
-          this.titles = language.titles
-        }
-      })
+      this.changeTitleByLanguage(newLanguage)
     }
   },
   methods: {
@@ -78,6 +75,13 @@ export default {
             })
       }
     },
+    changeTitleByLanguage(newLanguage) {
+      this.languageTitles.forEach((language) => {
+        if (language.language === newLanguage) {
+          this.titles = language.titles
+        }
+      })
+    }
   }
 }
 </script>
