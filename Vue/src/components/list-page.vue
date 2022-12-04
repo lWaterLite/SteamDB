@@ -25,7 +25,6 @@
         :label="search.title"
         :name="search.id">
       <item-list @getItem="getItemId" @searchList="addSearchList" :language="language" :mode="search.mode" :param="search.param"></item-list>
-      <!-- TODO 建立 searches 数组，数组元素由 detail 组件的 emit 获得，title 为待搜索的 Object 翻译过后的内容，id 的格式为 mode: param-->
     </el-tab-pane>
   </el-tabs>
 
@@ -116,11 +115,11 @@ export default {
                 }
                 this.items = this.items.filter((item) => item.itemId !== targetName)
                 this.itemsIndex--
+                flag = true
               }
-              flag = true
             }
         )
-        if (!flag) {
+        if (flag === false) {
           if (targetName === this.value) {
             this.searches.forEach((search, index) => {
               if (search.id === targetName) {
