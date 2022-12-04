@@ -6,7 +6,7 @@ from templates.ToJson import *
 from templates.Table import *
 
 app = Flask(__name__)  # type: Flask
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:Zn+H2SO4@localhost:3306/steamdb'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost:3306/steamdb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 db.init_app(app)
@@ -224,6 +224,24 @@ def get_item_by_tag(language, tag_id):
 
     data.append(exception_count)
     data = dumps(data)
+    return data, 200, {'Content-Type': 'application/json'}
+
+
+@app.route('/api/<string:language>/content/tag/<int:tag_id>')
+def get_tag_by_id(language: str, tag_id: int):
+    try:
+        language_id = Language.query.filter_by(language=language).first().languageId
+    except AttributeError:
+        return "error with language code", 500, {'Content-Type': 'text/plain'}
+    try:
+        k = TagLanguage.query.filter(
+            and_(TagLanguage.tagId == tag_id, TagLanguage.languageId == language_id)
+        ).first()
+        content = k.tag
+    except AttributeError:
+        return "error with tag id", 500, {'Content-Type': 'text/plain'}
+
+    data = content
     return data, 200, {'Content-Type': 'application/json'}
 
 
