@@ -141,3 +141,18 @@
 
   另外array的最后一个元素为int，代表后端在检索item时遇到的无效itemId个数
 
+### /api/<string: language>/content/tag/<int: tag_id>
+
+- 用来根据lanuage和tag_ig查找tag名称
+
+- param: language
+
+  此处填入语言代码，与上述一致
+
+- param: tag_id
+
+  此处填入tagId，请注意任何非法的id请求都会导致返回500，而不是404，同时返回文本error with tag id
+
+- return: string
+
+  返回查询的语言和id的tag内容，不包含任何其他东西。
