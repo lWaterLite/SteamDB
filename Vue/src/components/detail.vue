@@ -1,16 +1,18 @@
 <template>
-<div >{{detail.name}}
-</div>
-<div>
-<span>{{detail.brief}} </span>
-  <el-divider></el-divider>
-<span><p>date:{{detail.date}}</p>
-  <p>price:{{detail.price}}￥</p>
-  <p>rate:{{(detail.rate*100)}}%</p>
-<p>publisher:<el-tag v-for="publisher in detail.publisher">{{publisher}}</el-tag> </p></span>
-<el-divider></el-divider>
-<span>tags:<el-tag v-for="tag in detail.tag">{{tag}}</el-tag> </span>
-</div>
+  {{ detail }}
+  <div>{{ detail.name }}</div>
+  <div>
+    <span>{{ detail.brief }} </span>
+    <el-divider></el-divider>
+    <span>{{ titles[0] }}:{{ detail.date }}</span>
+    <span>{{ titles[1] }}:{{ detail.price }}￥</span>
+    <span>{{ titles[2] }}:{{ (detail.rate * 100) }}%</span>
+    <span>{{ titles[3] }}:<el-tag v-for="publisher in publishers">{{ publisher }}</el-tag> </span>
+    <span>{{ titles[4] }}:<el-tag v-for="developer in developers">{{ developer }}</el-tag> </span>
+    <el-divider></el-divider>
+    {{ titles[5] }}:
+    <el-tag v-for="tag in tags">{{ tag }}</el-tag>
+  </div>
 </template>
 
 <script>
@@ -24,7 +26,25 @@ export default {
   },
   data() {
     return {
-      detail:{}
+      detail: {},
+      tags: [],
+      titles: ['游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签'],
+      publishers: [],
+      developers: [],
+      languageTitles: [
+        {
+          language: 'zh-cn',
+          titles: ['游戏发行时间', '价格', '好评率', '制作商', '发行商', '标签']
+        },
+        {
+          language: 'en-us',
+          titles: ['game release time', 'price', 'rate', 'producers', 'publisher', 'tags']
+        },
+        {
+          language: 'zh-tw',
+          titles: ['遊戲發行時間', '價格', '好評率', '製作商', '發行商', '標簽']
+        }
+      ]
     }
   },
   props: {
@@ -34,6 +54,7 @@ export default {
   watch: {
     language(newLanguage) {
       this.getDetail(newLanguage, this.itemId)
+      this.titles = this.languageTitles.find((tag) => tag.language === newLanguage).titles
     }
   },
   methods: {
@@ -42,6 +63,21 @@ export default {
           .then((res) => {
             this.detail = res.data
             this.$emit('languageChangeHandler', res.data.name)
+            this.detail.tag.forEach((tag) => {
+              for (name in tag) {
+                this.tags.push(tag[name])
+              }
+            })
+            this.detail.developer.forEach((developer) => {
+              for (name in developer) {
+                this.developers.push(developer[name])
+              }
+            })
+            this.detail.publisher.forEach((publisher) => {
+              for (name in publisher) {
+                this.publishers.push(publisher[name])
+              }
+            })
           })
           .catch(() => {
             this.$emit('wrongSearch', this.itemId)
