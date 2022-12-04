@@ -70,7 +70,6 @@ export default {
       } else {
         httpGet.get('/api/' + language + '/' + this.mode + '/' + this.param)
             .then((res) => {
-              console.log(res)
               this.items = res.data
               this.items.pop()
             })
