@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="items" stripe @row-click="rowClickHandler" style="user-select: none;">
+  <el-table :data="outputItems" stripe @row-click="rowClickHandler" style="user-select: none;">
     <el-table-column prop="itemId" :label="titles[0]"></el-table-column>
     <el-table-column prop="name" :label="titles[1]" width="400px"></el-table-column>
     <el-table-column prop="date" :label="titles[2]"></el-table-column>
@@ -7,12 +7,18 @@
     <el-table-column prop="rate" :label="titles[4]" width="200px"></el-table-column>
     <el-table-column prop="price" :label="titles[5]"></el-table-column>
   </el-table>
+  <div style="text-align: center">
+    <el-pagination layout="prev, pager, next" :total="items.length" :page-size="6" @current-change="changePage"/>
+  </div>
 </template>
 
 <script>
 import {httpGet} from '../plugins/axios.js'
 
+const pageSize = 6
+
 export default {
+  emits: ['getItem'],
   name: "item-list",
   mounted() {
     this.getItems(this.language)
@@ -20,8 +26,8 @@ export default {
   },
   data() {
     return {
-      detail: [],
       items: [],
+      outputItems: [],
       titles: ['游戏 id', '游戏名', '游戏发行时间', '好评度', '好评率', '售价'],
       languageTitles: [
         {
@@ -34,7 +40,7 @@ export default {
         },
         {
           language: 'en-us',
-          titles: ['Game id',' game name', 'Game launch time',' critical reception', 'critical reception rate',' Price']
+          titles: ['Game id', ' game name', 'Game launch time', ' critical reception', 'critical reception rate', ' Price']
         }
       ],
     }
@@ -60,6 +66,7 @@ export default {
             .then((res) => {
               this.items = res.data
               this.items.pop()
+              this.changePage(1)
             })
             .catch((err) => {
               console.log(err)
@@ -69,6 +76,7 @@ export default {
             .then((res) => {
               this.items = res.data
               this.items.pop()
+              this.changePage(1)
             })
             .catch((err) => {
               console.log(err)
@@ -81,6 +89,9 @@ export default {
           this.titles = language.titles
         }
       })
+    },
+    changePage(newPage) {
+      this.outputItems = this.items.filter((item, index) => index >= (newPage - 1) * pageSize && index < newPage * pageSize)
     }
   }
 }

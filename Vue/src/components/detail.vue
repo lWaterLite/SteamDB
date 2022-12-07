@@ -1,7 +1,7 @@
 <template>
   <el-descriptions
       border
-      column="3"
+      :column="3"
       size="large"
       :title="detail.name"
   >
