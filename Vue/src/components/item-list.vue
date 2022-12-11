@@ -96,7 +96,7 @@ export default {
       this.filterList(newPage)
     },
     filterList(page) {
-      this.outputItems = this.items.filter((item, index) => index >= (page - 1) * pageSize && index < page * pageSize)
+      this.outputItems = this.items.filter((item, index) => index >= (page - 1) * PAGE_SIZE && index < page * PAGE_SIZE)
     }
   }
 }
