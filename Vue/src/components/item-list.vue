@@ -15,7 +15,7 @@
 <script>
 import {httpGet} from '../plugins/axios.js'
 
-const pageSize = 1
+const PAGE_SIZE = 6
 
 export default {
   emits: ['getItem'],
