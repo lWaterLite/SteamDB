@@ -8,14 +8,14 @@
     <el-table-column prop="price" :label="titles[5]"></el-table-column>
   </el-table>
   <div style="text-align: center">
-    <el-pagination layout="prev, pager, next" :total="items.length" :page-size="6" @current-change="changePage"/>
+    <el-pagination layout="prev, pager, next" :total="items.length" :page-size="6" @current-change="changePage" :current-page="activePage" v-model="activePage"/>
   </div>
 </template>
 
 <script>
 import {httpGet} from '../plugins/axios.js'
 
-const pageSize = 6
+const pageSize = 1
 
 export default {
   emits: ['getItem'],
@@ -26,6 +26,7 @@ export default {
   },
   data() {
     return {
+      activePage: 6,
       items: [],
       outputItems: [],
       titles: ['游戏 id', '游戏名', '游戏发行时间', '好评度', '好评率', '售价'],
@@ -66,7 +67,7 @@ export default {
             .then((res) => {
               this.items = res.data
               this.items.pop()
-              this.changePage(1)
+              this.filterList(this.activePage)
             })
             .catch((err) => {
               console.log(err)
@@ -76,7 +77,7 @@ export default {
             .then((res) => {
               this.items = res.data
               this.items.pop()
-              this.changePage(1)
+              this.filterList(this.activePage)
             })
             .catch((err) => {
               console.log(err)
@@ -91,7 +92,11 @@ export default {
       })
     },
     changePage(newPage) {
-      this.outputItems = this.items.filter((item, index) => index >= (newPage - 1) * pageSize && index < newPage * pageSize)
+      this.activePage = newPage
+      this.filterList(newPage)
+    },
+    filterList(page) {
+      this.outputItems = this.items.filter((item, index) => index >= (page - 1) * pageSize && index < page * pageSize)
     }
   }
 }
