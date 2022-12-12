@@ -229,6 +229,13 @@ def get_item_by_tag(language, tag_id):
 
 @app.route('/api/<string:language>/content/tag/<int:tag_id>')
 def get_tag_by_id(language: str, tag_id: int):
+    """
+    This api it to get specific tag by language and tag id.
+
+    @param language: the requested language code.
+    @param tag_id: the requested tag id.
+    @return: response with Content-Type of application/json, see more in api docs.
+    """
     try:
         language_id = Language.query.filter_by(language=language).first().languageId
     except AttributeError:
